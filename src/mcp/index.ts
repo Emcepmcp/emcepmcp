@@ -2,7 +2,7 @@ import { MCPConfig } from "../types";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { Tool } from "../core/tool";
-import { GudTekMCP } from "../core/gudtekmcp";
+import { EmcepMCP } from "../core/emcepmcp";
 import { z } from "zod";
 import { zodToMCPShape } from "../utils/zodToMCPShape";
 
@@ -26,14 +26,14 @@ export class MCPClient {
   public async initialize(): Promise<void> {
     // Initialize MCP client
     this.server = new McpServer({
-      name: this.config.name || "GudTekMCP-mcp",
+      name: this.config.name || "EmcepMCP-mcp",
       version: this.config.version || "0.1.0",
     });
   }
 
   public async registerTools(
     tools: Map<string, Tool>,
-    GudTekMCP: GudTekMCP
+    EmcepMCP: EmcepMCP
   ): Promise<void> {
     if (!this.server) {
       throw new Error("MCP client not initialized");
@@ -45,8 +45,8 @@ export class MCPClient {
 
       this.server.tool(name, tool.description, result, async (params) => {
         try {
-          // Execute the tool with the context from the GudTekMCP instance
-          const result = await tool.execute(params, GudTekMCP.getContext());
+          // Execute the tool with the context from the EmcepMCP instance
+          const result = await tool.execute(params, EmcepMCP.getContext());
           const response: MCPToolResponse = {
             content: [
               {

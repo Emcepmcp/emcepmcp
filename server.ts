@@ -1,5 +1,5 @@
 import express from "express";
-import { GudTekMCP } from "./src";
+import { EmcepMCP } from "./src/core/emcepmcp";
 import { Connection } from "@solana/web3.js";
 import dotenv from "dotenv";
 import cors from "cors";
@@ -10,8 +10,8 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// Initialize GudTekMCP
-const gudTekMCP = new GudTekMCP({
+// Initialize EmcepMCP
+const emcepMCP = new EmcepMCP({
   connection: new Connection(
     process.env.RPC_ENDPOINT || "https://api.mainnet-beta.solana.com"
   ),
@@ -47,9 +47,9 @@ app.post("/api/analyze-token", async (req, res) => {
     }
 
     // Create a new agent for this analysis
-    const agent = gudTekMCP.createAgent({
+    const agent = emcepMCP.createAgent({
       name: "token-analyzer",
-      connection: gudTekMCP.getConnection(),
+      connection: emcepMCP.getConnection(),
       rpcEndpoint:
         process.env.RPC_ENDPOINT || "https://api.mainnet-beta.solana.com",
       mcp: process.env.MCP_ENDPOINT

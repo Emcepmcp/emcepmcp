@@ -1,11 +1,11 @@
 import { z } from "zod";
-import { GudTekMCPContext } from "../types";
+import { EmcepMCPContext } from "../types";
 
 export interface Tool {
   name: string;
   description: string;
   getSchema(): z.ZodType<any>;
-  execute(params: any, context: GudTekMCPContext): Promise<any>;
+  execute(params: any, context: EmcepMCPContext): Promise<any>;
   getName(): string;
 }
 
@@ -20,7 +20,7 @@ export class BaseTool implements Tool {
     return this.parameters;
   }
 
-  public async execute(params: any, context: GudTekMCPContext): Promise<any> {
+  public async execute(params: any, context: EmcepMCPContext): Promise<any> {
     throw new Error("execute method must be implemented by subclasses");
   }
 

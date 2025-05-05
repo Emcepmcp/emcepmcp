@@ -1,7 +1,7 @@
 import { Connection, Keypair, PublicKey } from "@solana/web3.js";
 import {
-  GudTekMCPConfig,
-  GudTekMCPContext,
+  EmcepMCPConfig,
+  EmcepMCPContext,
   AgentConfig,
   ToolConfig,
 } from "../types";
@@ -9,31 +9,32 @@ import { Agent } from "./agent";
 import { Tool, BaseTool } from "./tool";
 import { z } from "zod";
 import { Logger } from "../utils/logger";
+import { MCPClient } from "../mcp";
 
 /**
- * GudTekMCP is the main class that manages agents, tools, and the execution context.
- * It provides a unified interface for creating and managing agents, registering tools,
- * and executing operations on the Solana blockchain.
+ * EmcepMCP is the main class that manages agents, tools, and the execution context.
+ * It provides a framework for building and executing AI-powered analysis tools
+ * on the Solana blockchain.
  */
-export class GudTekMCP {
+export class EmcepMCP {
   private agents: Map<string, Agent>;
   private tools: Map<string, Tool>;
-  private context: GudTekMCPContext;
+  private context: EmcepMCPContext;
   private logger: Logger;
-  private config: GudTekMCPConfig;
+  private config: EmcepMCPConfig;
   private marketAnalysisInterval?: NodeJS.Timeout;
   private memoLoggingInterval?: NodeJS.Timeout;
 
   /**
-   * Creates a new GudTekMCP instance with the provided configuration.
+   * Creates a new EmcepMCP instance with the provided configuration.
    *
-   * @param config - The configuration for the GudTekMCP instance
+   * @param config - The configuration for the EmcepMCP instance
    */
-  constructor(config: GudTekMCPConfig) {
+  constructor(config: EmcepMCPConfig) {
     this.config = config;
     this.agents = new Map();
     this.tools = new Map();
-    this.logger = new Logger("GudTekMCP");
+    this.logger = new Logger("EmcepMCP");
     this.context = {
       connection: config.connection,
       wallet: config.wallet,
@@ -46,7 +47,7 @@ export class GudTekMCP {
         : undefined,
     };
 
-    this.logger.info("GudTekMCP initialized with connection to Solana network");
+    this.logger.info("EmcepMCP initialized with connection to Solana network");
   }
 
   /**
@@ -55,7 +56,7 @@ export class GudTekMCP {
    * @param config - The configuration for the agent
    * @returns The created agent
    */
-  public createAgent(config: GudTekMCPConfig): Agent {
+  public createAgent(config: EmcepMCPConfig): Agent {
     try {
       const agent = new Agent(config, this);
       this.agents.set(config.name || `agent-${this.agents.size}`, agent);
@@ -91,13 +92,14 @@ export class GudTekMCP {
   }
 
   /**
-   * Registers a tool with the GudTekMCP instance.
+   * Registers a tool with the EmcepMCP instance.
    *
-   * @param tool - The tool to register
+   * @param name - The name of the tool
+   * @param tool - The tool instance to register
    */
-  public registerTool(tool: Tool): void {
-    this.tools.set(tool.getName(), tool);
-    this.logger.info(`Tool registered: ${tool.getName()}`);
+  public registerTool(name: string, tool: Tool): void {
+    this.tools.set(name, tool);
+    this.logger.info(`Tool registered: ${name}`);
   }
 
   /**
@@ -111,14 +113,14 @@ export class GudTekMCP {
       const tool = new (class extends BaseTool {
         private handler: (
           params: any,
-          context: GudTekMCPContext
+          context: EmcepMCPContext
         ) => Promise<any>;
 
         constructor(
           name: string,
           description: string,
           parameters: z.ZodType<any>,
-          handler: (params: any, context: GudTekMCPContext) => Promise<any>
+          handler: (params: any, context: EmcepMCPContext) => Promise<any>
         ) {
           super(name, description, parameters);
           this.handler = handler;
@@ -126,7 +128,7 @@ export class GudTekMCP {
 
         public async execute(
           params: any,
-          context: GudTekMCPContext
+          context: EmcepMCPContext
         ): Promise<any> {
           // Validate parameters against schema
           const validatedParams = this.parameters.parse(params);
@@ -134,7 +136,7 @@ export class GudTekMCP {
         }
       })(config.name, config.description, config.parameters, config.handler);
 
-      this.registerTool(tool);
+      this.registerTool(config.name, tool);
       return tool;
     } catch (error) {
       this.logger.error(
@@ -168,7 +170,7 @@ export class GudTekMCP {
    *
    * @returns The execution context
    */
-  public getContext(): GudTekMCPContext {
+  public getContext(): EmcepMCPContext {
     return this.context;
   }
 
@@ -203,20 +205,20 @@ export class GudTekMCP {
   /**
    * Executes a tool with the specified parameters.
    *
-   * @param toolName - The name of the tool to execute
+   * @param name - The name of the tool to execute
    * @param params - The parameters for the tool
    * @returns The result of the tool execution
    */
-  public async executeTool(toolName: string, params: any): Promise<any> {
+  public async executeTool(name: string, params: any): Promise<any> {
     try {
-      const tool = this.getTool(toolName);
+      const tool = this.getTool(name);
       if (!tool) {
-        throw new Error(`Tool ${toolName} not found`);
+        throw new Error(`Tool ${name} not found`);
       }
 
-      this.logger.info(`Executing tool: ${toolName}`);
+      this.logger.info(`Executing tool: ${name}`);
       const result = await tool.execute(params, this.context);
-      this.logger.info(`Tool execution completed: ${toolName}`);
+      this.logger.info(`Tool execution completed: ${name}`);
       return result;
     } catch (error) {
       this.logger.error(
@@ -350,4 +352,4 @@ export class GudTekMCP {
       );
     }
   }
-}
+} 

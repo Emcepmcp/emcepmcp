@@ -1,24 +1,24 @@
-# GudTekMCP - AI-Powered Solana Token Analysis
+# EmcepMCP - AI-Powered Solana Token Analysis
 
-![GudTekMCP Banner](/images/banner.jpg)
+![EmcepMCP Banner](/images/banner.jpg)
 
 ## AI-Powered Token Analysis for Solana
 
-GudTekMCP is a revolutionary framework that brings AI-powered analysis to Solana token trading. By combining real-time market data with advanced AI models through the Model Context Protocol (MCP), GudTekMCP provides deep insights into token performance and market trends.
+EmcepMCP is a revolutionary framework that brings AI-powered analysis to Solana token trading. By combining real-time market data with advanced AI models through the Model Context Protocol (MCP), EmcepMCP provides deep insights into token performance and market trends.
 
 > 🚀 **First AI-Powered Token Analysis Framework for Solana!**  
-> GudTekMCP is the first framework to combine Solana blockchain data with AI analysis through MCP.
+> EmcepMCP is the first framework to combine Solana blockchain data with AI analysis through MCP.
 
-## 🔍 What is GudTekMCP?
+## 🔍 What is EmcepMCP?
 
-GudTekMCP combines the power of:
+EmcepMCP combines the power of:
 
 - **Solana Blockchain**: High-performance blockchain for token trading
 - **Model Context Protocol (MCP)**: Open protocol for creating custom AI tools
 - **Multiple DEXes**: Support for Raydium, Meteora, Orca, and PumpFun
 - **Real-time Market Data**: Live price, volume, and liquidity analysis
 
-With advanced AI analysis capabilities, GudTekMCP allows traders to:
+With advanced AI analysis capabilities, EmcepMCP allows traders to:
 
 - Get instant token analysis using natural language
 - Discover market trends and patterns
@@ -29,12 +29,8 @@ With advanced AI analysis capabilities, GudTekMCP allows traders to:
 
 Join our community for updates and discussion:
 
-- **Telegram**: [@gudtekofficial](https://t.me/gudtekofficial)
-- **Twitter**: [@GudTekMCP](https://x.com/GudTekMCP)
+- **Twitter**: [@EmcepMCP](https://x.com/EmcepMCP)
 
-## 🌟 Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=gudtekmcp/gudtek-mcp-api&type=Date)](https://www.star-history.com/gudtekmcp/gudtek-mcp-api&Date)
 
 ## ✨ Features
 
@@ -65,7 +61,7 @@ Join our community for updates and discussion:
 1. Clone this repository:
 
    ```bash
-   git clone https://github.com/gudtekmcp/gudtek-mcp-api.git
+   git clone https://github.com/emcepmcp/emcep-mcp-api.git
    ```
 
 2. Install dependencies:
@@ -149,4 +145,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ---
 
-_Note: This is not financial advice. GudTekMCP is a tool for market analysis and should be used responsibly._
+_Note: This is not financial advice. EmcepMCP is a tool for market analysis and should be used responsibly._

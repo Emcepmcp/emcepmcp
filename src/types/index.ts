@@ -24,7 +24,7 @@ export interface MemoConfig {
   interval: number; // Memo logging interval in seconds
 }
 
-export interface GudTekMCPConfig {
+export interface EmcepMCPConfig {
   name?: string;
   version?: string;
   wallet?: Keypair;
@@ -48,7 +48,7 @@ export interface ToolConfig {
   name: string;
   description: string;
   parameters: z.ZodType<any>;
-  handler: (params: any, context: GudTekMCPContext) => Promise<any>;
+  handler: (params: any, context: EmcepMCPContext) => Promise<any>;
 }
 
 export interface MCPConfig {
@@ -59,7 +59,7 @@ export interface MCPConfig {
   model: string;
 }
 
-export interface GudTekMCPContext {
+export interface EmcepMCPContext {
   connection: Connection;
   wallet?: Keypair;
   mcp?: MCPConfig;

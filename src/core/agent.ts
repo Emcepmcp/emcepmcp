@@ -1,18 +1,20 @@
-import { GudTekMCPConfig, GudTekMCPContext } from "../types";
+import { EmcepMCPConfig, EmcepMCPContext } from "../types";
 import { Tool } from "./tool";
 import { MCPClient } from "../mcp";
-import { GudTekMCP } from "./gudtekmcp";
+import { EmcepMCP } from "./emcepmcp";
+import { Logger } from "./logger";
 
 export class Agent {
-  private config: GudTekMCPConfig;
+  private config: EmcepMCPConfig;
   private tools: Map<string, Tool>;
-  private context: GudTekMCPContext;
-  private mcpClient?: MCPClient;
-  private GudTekMCP: GudTekMCP;
+  private context: EmcepMCPContext;
+  private mcpClient: MCPClient;
+  private EmcepMCP: EmcepMCP;
+  private logger: Logger;
 
-  constructor(config: GudTekMCPConfig, GudTekMCP: GudTekMCP) {
+  constructor(config: EmcepMCPConfig, EmcepMCP: EmcepMCP) {
     this.config = config;
-    this.GudTekMCP = GudTekMCP;
+    this.EmcepMCP = EmcepMCP;
     this.tools = new Map();
     this.context = {
       connection: config.connection,
@@ -25,22 +27,15 @@ export class Agent {
           }
         : undefined,
     };
+    this.logger = new Logger("Agent");
+    this.mcpClient = new MCPClient({
+      name: "EmcepMCP-agent",
+      version: config.version || "1.0.0",
+    });
   }
 
   public async initialize(): Promise<void> {
-    // Initialize MCP client if endpoint is configured
-    if (this.config.mcp) {
-      this.mcpClient = new MCPClient({
-        endpoint: this.config.mcp.endpoint,
-        apiKey: this.config.mcp.apiKey,
-        model: "gpt-4",
-        name: "GudTekMCP-agent",
-        version: "0.1.0",
-      });
-      await this.mcpClient.initialize();
-      await this.mcpClient.registerTools(this.tools, this.GudTekMCP);
-      await this.mcpClient.startServer();
-    }
+    await this.mcpClient.registerTools(this.tools, this.EmcepMCP);
   }
 
   public registerTool(tool: Tool): void {
@@ -51,7 +46,7 @@ export class Agent {
     return this.tools;
   }
 
-  public getContext(): GudTekMCPContext {
+  public getContext(): EmcepMCPContext {
     return this.context;
   }
 

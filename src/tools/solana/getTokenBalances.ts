@@ -1,7 +1,7 @@
 import { PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { z } from "zod";
 import { BaseTool } from "../../core/tool";
-import { GudTekMCPContext } from "../../types";
+import { EmcepMCPContext } from "../../types";
 import { TOKEN_PROGRAM_ID, AccountLayout } from "@solana/spl-token";
 
 class GetTokenBalancesTool extends BaseTool {
@@ -17,7 +17,7 @@ class GetTokenBalancesTool extends BaseTool {
 
   async execute(
     params: { address: string },
-    context: GudTekMCPContext
+    context: EmcepMCPContext
   ): Promise<any> {
     const walletAddress = new PublicKey(params.address);
 
@@ -34,7 +34,7 @@ class GetTokenBalancesTool extends BaseTool {
 
     // Process token balances
     const tokenBalances = await Promise.all(
-      tokenAccounts.value.map(async (tokenAccount) => {
+      tokenAccounts.value.map(async (tokenAccount: { account: { data: Buffer } }) => {
         const accountData = AccountLayout.decode(tokenAccount.account.data);
         const mint = new PublicKey(accountData.mint);
         const amount = accountData.amount;

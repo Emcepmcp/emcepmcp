@@ -1,7 +1,7 @@
 import { PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { z } from "zod";
 import { BaseTool } from "../../core/tool";
-import { GudTekMCPContext } from "../../types";
+import { EmcepMCPContext } from "../../types";
 
 class GetBalanceTool extends BaseTool {
   constructor() {
@@ -20,7 +20,7 @@ class GetBalanceTool extends BaseTool {
 
   async execute(
     params: { address: string; tokenAddress?: string },
-    context: GudTekMCPContext
+    context: EmcepMCPContext
   ): Promise<any> {
     const walletAddress = new PublicKey(params.address);
 
